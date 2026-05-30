@@ -1,0 +1,10 @@
+{
+  "name": "crafthouse-media",
+  "private": true,
+  "scripts": {
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev": "npm run dev:backend & npm run dev:frontend",
+    "build": "npm run build --prefix backend && npm run build --prefix frontend"
+  }
+}
