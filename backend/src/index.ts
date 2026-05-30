@@ -7,11 +7,34 @@ dotenv.config();
 
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
-const CORS_ORIGIN = process.env.CORS_ORIGIN || "http://localhost:3000";
+
+const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000")
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+
+const allowVercelPreviews = process.env.ALLOW_VERCEL_PREVIEWS === "true";
 
 app.use(
   cors({
-    origin: [CORS_ORIGIN, "http://127.0.0.1:3000"],
+    origin(origin, callback) {
+      if (!origin) return callback(null, true);
+      if (
+        allowedOrigins.includes(origin) ||
+        origin === "http://127.0.0.1:3000"
+      ) {
+        return callback(null, true);
+      }
+      if (allowVercelPreviews) {
+        try {
+          const { hostname } = new URL(origin);
+          if (hostname.endsWith(".vercel.app")) return callback(null, true);
+        } catch {
+          /* invalid origin */
+        }
+      }
+      callback(new Error(`CORS blocked: ${origin}`));
+    },
     methods: ["GET", "POST", "OPTIONS"],
   }),
 );

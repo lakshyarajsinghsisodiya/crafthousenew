@@ -77,6 +77,12 @@ cd frontend && npm run build && npm start
 
 Set `NEXT_PUBLIC_API_URL` to your deployed API URL in production.
 
+## Deploy to production
+
+**Backend → [Render](https://render.com)** · **Frontend → [Vercel](https://vercel.com)**
+
+Step-by-step instructions: **[DEPLOY.md](./DEPLOY.md)**
+
 ## Tech Stack
 
 **Frontend:** Next.js, React, TypeScript, Tailwind CSS, GSAP, Framer Motion, Lenis
