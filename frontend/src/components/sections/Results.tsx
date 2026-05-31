@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { gsap, registerGSAP } from "@/lib/gsap-config";
+import { gsap, registerGSAP, scrollReveal, onScrollSystemReady, ScrollTrigger } from "@/lib/gsap-config";
 import { EditorialHeading } from "@/components/ui/EditorialHeading";
 import type { Stat } from "@/lib/api";
 
@@ -67,18 +67,29 @@ export function Results({ stats }: ResultsProps) {
 
   useEffect(() => {
     registerGSAP();
-    const ctx = gsap.context(() => {
-      gsap.from(".stat-item", {
-        opacity: 0,
-        y: 50,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
-      });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
+    let ctx: gsap.Context | undefined;
+
+    const setup = () => {
+      ctx?.revert();
+      ctx = gsap.context(() => {
+        scrollReveal(".stat-item", sectionRef.current, {
+          y: 50,
+          duration: 0.8,
+          stagger: 0.1,
+          start: "top 78%",
+        });
+      }, sectionRef);
+      ScrollTrigger.refresh();
+    };
+
+    const cancelReady = onScrollSystemReady(setup);
+    setup();
+
+    return () => {
+      cancelReady();
+      ctx?.revert();
+    };
+  }, [stats]);
 
   return (
     <section

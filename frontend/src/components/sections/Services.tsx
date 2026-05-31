@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { gsap, registerGSAP } from "@/lib/gsap-config";
+import { gsap, registerGSAP, scrollReveal, onScrollSystemReady, ScrollTrigger } from "@/lib/gsap-config";
 import { EditorialHeading } from "@/components/ui/EditorialHeading";
 import type { Service } from "@/lib/api";
 
@@ -14,18 +14,29 @@ export function Services({ services }: ServicesProps) {
 
   useEffect(() => {
     registerGSAP();
-    const ctx = gsap.context(() => {
-      gsap.from(".service-card", {
-        opacity: 0,
-        y: 60,
-        duration: 0.9,
-        stagger: 0.12,
-        ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
-      });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
+    let ctx: gsap.Context | undefined;
+
+    const setup = () => {
+      ctx?.revert();
+      ctx = gsap.context(() => {
+        scrollReveal(".service-card", sectionRef.current, {
+          y: 60,
+          duration: 0.9,
+          stagger: 0.12,
+          start: "top 75%",
+        });
+      }, sectionRef);
+      ScrollTrigger.refresh();
+    };
+
+    const cancelReady = onScrollSystemReady(setup);
+    setup();
+
+    return () => {
+      cancelReady();
+      ctx?.revert();
+    };
+  }, [services]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     const card = e.currentTarget;

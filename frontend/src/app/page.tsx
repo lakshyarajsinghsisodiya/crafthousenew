@@ -31,12 +31,17 @@ const fallbackContent = {
 };
 
 async function loadData() {
-  if (process.env.NODE_ENV === "development") {
-    return fallbackContent;
-  }
-
   try {
-    return await api.getContent();
+    const data =
+      process.env.NODE_ENV === "development"
+        ? fallbackContent
+        : await api.getContent();
+    return {
+      ...fallbackContent,
+      ...data,
+      packages: data.packages?.length ? data.packages : fallbackPackages,
+      services: data.services?.length ? data.services : fallbackServices,
+    };
   } catch {
     return fallbackContent;
   }

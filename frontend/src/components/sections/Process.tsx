@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { gsap, registerGSAP } from "@/lib/gsap-config";
+import { gsap, registerGSAP, scrollReveal, onScrollSystemReady, ScrollTrigger } from "@/lib/gsap-config";
 import { EditorialHeading } from "@/components/ui/EditorialHeading";
 import type { ProcessStep } from "@/lib/api";
 
@@ -39,14 +39,16 @@ export function Process({ steps }: ProcessProps) {
     });
 
     mm.add("(max-width: 767px)", () => {
-      gsap.from(".process-step", {
-        opacity: 0,
+      scrollReveal(".process-step", section, {
         x: 30,
+        y: 0,
         duration: 0.7,
         stagger: 0.15,
-        scrollTrigger: { trigger: section, start: "top 80%" },
+        start: "top 82%",
       });
     });
+
+    onScrollSystemReady(() => ScrollTrigger.refresh());
 
     return () => mm.revert();
   }, [steps]);

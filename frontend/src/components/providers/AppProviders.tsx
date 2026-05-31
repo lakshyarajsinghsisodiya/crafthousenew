@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Lenis from "lenis";
-import { registerGSAP, ScrollTrigger } from "@/lib/gsap-config";
+import {
+  registerGSAP,
+  ScrollTrigger,
+  markScrollSystemReady,
+} from "@/lib/gsap-config";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { FilmEffects } from "@/components/effects/FilmEffects";
 import { DustParticles } from "@/components/effects/DustParticles";
@@ -12,7 +16,10 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
     registerGSAP();
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reducedMotion) return;
+    if (reducedMotion) {
+      markScrollSystemReady();
+      return;
+    }
 
     const lenis = new Lenis({
       duration: 1.4,
@@ -49,9 +56,13 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
     }
     rafId = requestAnimationFrame(raf);
 
-    ScrollTrigger.refresh();
+    markScrollSystemReady();
+
+    const onLoad = () => ScrollTrigger.refresh(true);
+    window.addEventListener("load", onLoad);
 
     return () => {
+      window.removeEventListener("load", onLoad);
       cancelAnimationFrame(rafId);
       ScrollTrigger.removeEventListener("refresh", onRefresh);
       lenis.destroy();

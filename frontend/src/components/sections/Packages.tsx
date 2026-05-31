@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { gsap, registerGSAP } from "@/lib/gsap-config";
+import { gsap, registerGSAP, scrollReveal, onScrollSystemReady, ScrollTrigger } from "@/lib/gsap-config";
 import { EditorialHeading } from "@/components/ui/EditorialHeading";
 import type { Package } from "@/lib/api";
 
@@ -14,18 +14,29 @@ export function Packages({ packages }: PackagesProps) {
 
   useEffect(() => {
     registerGSAP();
-    const ctx = gsap.context(() => {
-      gsap.from(".package-card", {
-        opacity: 0,
-        y: 50,
-        duration: 0.9,
-        stagger: 0.15,
-        ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
-      });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
+    let ctx: gsap.Context | undefined;
+
+    const setup = () => {
+      ctx?.revert();
+      ctx = gsap.context(() => {
+        scrollReveal(".package-card", sectionRef.current, {
+          y: 50,
+          duration: 0.9,
+          stagger: 0.15,
+          start: "top 75%",
+        });
+      }, sectionRef);
+      ScrollTrigger.refresh();
+    };
+
+    const cancelReady = onScrollSystemReady(setup);
+    setup();
+
+    return () => {
+      cancelReady();
+      ctx?.revert();
+    };
+  }, [packages]);
 
   const formatPrice = (pkg: Package) =>
     `${pkg.currency}${pkg.price.toLocaleString("en-IN")}`;

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { gsap, registerGSAP } from "@/lib/gsap-config";
+import { gsap, registerGSAP, onScrollSystemReady, ScrollTrigger } from "@/lib/gsap-config";
 import { EditorialHeading } from "@/components/ui/EditorialHeading";
 import { LazyVideo } from "@/components/ui/LazyVideo";
 import type { PortfolioItem } from "@/lib/api";
@@ -25,15 +25,25 @@ export function Portfolio({ items }: PortfolioProps) {
           ease: "power4.inOut",
           scrollTrigger: { trigger: block, start: "top 75%" },
         });
-        gsap.from(block.querySelector(".portfolio-content"), {
-          opacity: 0,
-          x: block.classList.contains("layout-right") ? -40 : 40,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: { trigger: block, start: "top 70%" },
-        });
+        gsap.fromTo(
+          block.querySelector(".portfolio-content"),
+          { opacity: 0, x: block.classList.contains("layout-right") ? -40 : 40 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: block,
+              start: "top 72%",
+              once: true,
+              invalidateOnRefresh: true,
+            },
+          },
+        );
       });
     }, sectionRef);
+    onScrollSystemReady(() => ScrollTrigger.refresh());
     return () => ctx.revert();
   }, [items]);
 

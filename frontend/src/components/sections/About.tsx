@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { gsap, registerGSAP } from "@/lib/gsap-config";
+import { gsap, registerGSAP, scrollReveal, onScrollSystemReady, ScrollTrigger } from "@/lib/gsap-config";
 import { EditorialHeading } from "@/components/ui/EditorialHeading";
 
 export function About() {
@@ -10,22 +10,42 @@ export function About() {
 
   useEffect(() => {
     registerGSAP();
-    const ctx = gsap.context(() => {
-      gsap.from(".about-image", {
-        clipPath: "inset(100% 0 0 0)",
-        duration: 1.4,
-        ease: "power4.inOut",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
-      });
-      gsap.from(".about-text", {
-        opacity: 0,
-        y: 40,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 65%" },
-      });
-    }, sectionRef);
-    return () => ctx.revert();
+    let ctx: gsap.Context | undefined;
+
+    const setup = () => {
+      ctx?.revert();
+      ctx = gsap.context(() => {
+        gsap.fromTo(
+          ".about-image",
+          { clipPath: "inset(100% 0 0 0)" },
+          {
+            clipPath: "inset(0% 0 0 0)",
+            duration: 1.4,
+            ease: "power4.inOut",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 75%",
+              once: true,
+              invalidateOnRefresh: true,
+            },
+          },
+        );
+        scrollReveal(".about-text", sectionRef.current, {
+          y: 40,
+          duration: 1,
+          start: "top 72%",
+        });
+      }, sectionRef);
+      ScrollTrigger.refresh();
+    };
+
+    const cancelReady = onScrollSystemReady(setup);
+    setup();
+
+    return () => {
+      cancelReady();
+      ctx?.revert();
+    };
   }, []);
 
   return (

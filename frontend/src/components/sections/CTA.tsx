@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { gsap, registerGSAP } from "@/lib/gsap-config";
+import { gsap, registerGSAP, scrollReveal, onScrollSystemReady, ScrollTrigger } from "@/lib/gsap-config";
 import { EditorialHeading } from "@/components/ui/EditorialHeading";
 import { api } from "@/lib/api";
 
@@ -18,17 +18,28 @@ export function CTA() {
 
   useEffect(() => {
     registerGSAP();
-    const ctx = gsap.context(() => {
-      gsap.from(".cta-reveal", {
-        opacity: 0,
-        y: 60,
-        duration: 1.2,
-        stagger: 0.1,
-        ease: "power4.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
-      });
-    }, sectionRef);
-    return () => ctx.revert();
+    let ctx: gsap.Context | undefined;
+
+    const setup = () => {
+      ctx?.revert();
+      ctx = gsap.context(() => {
+        scrollReveal(".cta-reveal", sectionRef.current, {
+          y: 60,
+          duration: 1.2,
+          stagger: 0.1,
+          start: "top 78%",
+        });
+      }, sectionRef);
+      ScrollTrigger.refresh();
+    };
+
+    const cancelReady = onScrollSystemReady(setup);
+    setup();
+
+    return () => {
+      cancelReady();
+      ctx?.revert();
+    };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
