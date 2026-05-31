@@ -33,21 +33,31 @@ export function CustomCursor() {
       el.addEventListener("mouseleave", onLeaveInteractive);
     });
 
-    let raf: number;
-    const animate = () => {
-      pos.current.x += (target.current.x - pos.current.x) * 0.15;
-      pos.current.y += (target.current.y - pos.current.y) * 0.15;
+    let raf = 0;
+    let active = !document.hidden;
 
-      if (dotRef.current && ringRef.current) {
-        dotRef.current.style.transform = `translate(${pos.current.x}px, ${pos.current.y}px) translate(-50%, -50%)`;
-        ringRef.current.style.transform = `translate(${pos.current.x}px, ${pos.current.y}px) translate(-50%, -50%) scale(${scale.current})`;
+    const animate = () => {
+      if (active) {
+        pos.current.x += (target.current.x - pos.current.x) * 0.15;
+        pos.current.y += (target.current.y - pos.current.y) * 0.15;
+
+        if (dotRef.current && ringRef.current) {
+          dotRef.current.style.transform = `translate(${pos.current.x}px, ${pos.current.y}px) translate(-50%, -50%)`;
+          ringRef.current.style.transform = `translate(${pos.current.x}px, ${pos.current.y}px) translate(-50%, -50%) scale(${scale.current})`;
+        }
       }
       raf = requestAnimationFrame(animate);
     };
     animate();
 
+    const onVisibility = () => {
+      active = !document.hidden;
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     return () => {
       document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("visibilitychange", onVisibility);
       cancelAnimationFrame(raf);
       interactives.forEach((el) => {
         el.removeEventListener("mouseenter", onEnterInteractive);

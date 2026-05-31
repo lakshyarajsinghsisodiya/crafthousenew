@@ -1,11 +1,22 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap, registerGSAP } from "@/lib/gsap-config";
+import { LazyVideo } from "@/components/ui/LazyVideo";
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoReady, setVideoReady] = useState(false);
+
+  useEffect(() => {
+    const startVideo = () => setVideoReady(true);
+    if ("requestIdleCallback" in window) {
+      const id = requestIdleCallback(startVideo, { timeout: 1200 });
+      return () => cancelIdleCallback(id);
+    }
+    const t = setTimeout(startVideo, 600);
+    return () => clearTimeout(t);
+  }, []);
 
   useEffect(() => {
     registerGSAP();
@@ -46,18 +57,12 @@ export function Hero() {
       className="relative flex min-h-[100dvh] flex-col justify-end overflow-hidden pb-16 pt-28 md:pb-24 md:pt-32"
     >
       <div className="hero-video-wrap absolute inset-0 z-0">
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
+        <LazyVideo
+          eager={videoReady}
+          src="/media/videos/reel-05.mp4"
           poster="/media/photos/cafe-01.png"
           className="h-full w-full object-cover opacity-50"
-        >
-          <source src="/media/videos/reel-05.mp4" type="video/mp4" />
-          <source src="/media/videos/reel-03.mp4" type="video/mp4" />
-        </video>
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-[#090909]/80 via-[#090909]/60 to-[#090909]" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#090909] via-transparent to-[#090909]/40" />
       </div>

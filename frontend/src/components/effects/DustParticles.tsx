@@ -2,20 +2,24 @@
 
 import { useEffect, useRef } from "react";
 
-const PARTICLE_COUNT = 28;
-
 export function DustParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    if (window.matchMedia("(max-width: 768px)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let animationId: number;
-    const particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+    const particleCount = window.innerWidth > 1200 ? 18 : 12;
+    let animationId = 0;
+    let visible = !document.hidden;
+
+    const particles = Array.from({ length: particleCount }, () => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
       size: Math.random() * 1.5 + 0.3,
@@ -31,7 +35,18 @@ export function DustParticles() {
     resize();
     window.addEventListener("resize", resize);
 
+    const onVisibility = () => {
+      visible = !document.hidden;
+      if (visible) {
+        animationId = requestAnimationFrame(draw);
+      } else {
+        cancelAnimationFrame(animationId);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     const draw = () => {
+      if (!visible) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach((p) => {
         ctx.beginPath();
@@ -51,13 +66,14 @@ export function DustParticles() {
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 z-[9994] opacity-40"
+      className="pointer-events-none fixed inset-0 z-[9994] opacity-40 max-md:hidden"
       aria-hidden="true"
     />
   );

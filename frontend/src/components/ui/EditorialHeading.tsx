@@ -25,22 +25,26 @@ export function EditorialHeading({
     const el = ref.current;
     if (!el) return;
 
-    const inners = el.querySelectorAll(".text-mask-inner");
-    gsap.fromTo(
-      inners,
-      { yPercent: 110 },
-      {
-        yPercent: 0,
-        duration: 1.2,
-        stagger: 0.08,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 85%",
+    const ctx = gsap.context(() => {
+      const inners = el.querySelectorAll(".text-mask-inner");
+      gsap.fromTo(
+        inners,
+        { yPercent: 110 },
+        {
+          yPercent: 0,
+          duration: 1.2,
+          stagger: 0.08,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 85%",
+          },
         },
-      },
-    );
-  }, []);
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, [lines]);
 
   const sizeClass =
     size === "hero" ? "editorial-display" : "editorial-section";

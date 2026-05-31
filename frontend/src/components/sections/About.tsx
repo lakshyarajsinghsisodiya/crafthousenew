@@ -57,6 +57,7 @@ export function About() {
             fill
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 40vw"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#090909]/60 to-transparent" />
         </div>
@@ -68,6 +69,7 @@ export function About() {
             fill
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 35vw"
+            loading="lazy"
           />
         </div>
 
@@ -78,6 +80,7 @@ export function About() {
             fill
             className="object-cover"
             sizes="25vw"
+            loading="lazy"
           />
         </div>
       </div>

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { EditorialHeading } from "@/components/ui/EditorialHeading";
+import { LazyVideo } from "@/components/ui/LazyVideo";
 import type { GalleryData } from "@/lib/api";
 
 interface GalleryProps {
@@ -57,6 +58,7 @@ function MarqueeRow({
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                     sizes="420px"
+                    loading="lazy"
                   />
                 </div>
                 {item.url && (
@@ -72,16 +74,22 @@ function MarqueeRow({
               </div>
             ) : variant === "reel" ? (
               <div className="relative h-[220px] w-[140px] overflow-hidden sm:h-[280px] sm:w-[160px]">
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  poster={item.image}
-                  className="h-full w-full object-cover"
-                >
-                  {item.video && <source src={item.video} type="video/mp4" />}
-                </video>
+                {item.video ? (
+                  <LazyVideo
+                    src={item.video}
+                    poster={item.image}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover"
+                    sizes="160px"
+                    loading="lazy"
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#090909]/80 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                 <span className="absolute bottom-3 left-3 text-[10px] uppercase tracking-wider text-[#F5F5F5] opacity-0 transition-opacity group-hover:opacity-100">
                   {item.title}
@@ -95,6 +103,7 @@ function MarqueeRow({
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                   sizes="320px"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#090909]/80 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                 <span className="absolute bottom-3 left-3 text-[10px] uppercase tracking-wider text-[#F5F5F5] opacity-0 transition-opacity group-hover:opacity-100">

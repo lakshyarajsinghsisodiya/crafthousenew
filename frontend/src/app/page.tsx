@@ -20,29 +20,25 @@ import {
   fallbackTestimonials,
 } from "@/lib/fallback-data";
 
+const fallbackContent = {
+  stats: fallbackStats,
+  services: fallbackServices,
+  portfolio: fallbackPortfolio,
+  packages: fallbackPackages,
+  process: fallbackProcess,
+  testimonials: fallbackTestimonials,
+  gallery: fallbackGallery,
+};
+
 async function loadData() {
+  if (process.env.NODE_ENV === "development") {
+    return fallbackContent;
+  }
+
   try {
-    const [stats, services, portfolio, packages, process, testimonials, gallery] =
-      await Promise.all([
-        api.getStats(),
-        api.getServices(),
-        api.getPortfolio(),
-        api.getPackages(),
-        api.getProcess(),
-        api.getTestimonials(),
-        api.getGallery(),
-      ]);
-    return { stats, services, portfolio, packages, process, testimonials, gallery };
+    return await api.getContent();
   } catch {
-    return {
-      stats: fallbackStats,
-      services: fallbackServices,
-      portfolio: fallbackPortfolio,
-      packages: fallbackPackages,
-      process: fallbackProcess,
-      testimonials: fallbackTestimonials,
-      gallery: fallbackGallery,
-    };
+    return fallbackContent;
   }
 }
 

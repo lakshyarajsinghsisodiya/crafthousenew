@@ -1,12 +1,22 @@
 const API_BASE =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
 
-async function fetchAPI<T>(path: string): Promise<T> {
+async function fetchAPI<T>(path: string, revalidate = 3600): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
-    next: { revalidate: 60 },
+    next: { revalidate },
   });
   if (!res.ok) throw new Error(`API error: ${path}`);
   return res.json() as Promise<T>;
+}
+
+export interface SiteContent {
+  stats: Stat[];
+  services: Service[];
+  portfolio: PortfolioItem[];
+  packages: Package[];
+  process: ProcessStep[];
+  testimonials: Testimonial[];
+  gallery: GalleryData;
 }
 
 export interface Service {
@@ -77,6 +87,7 @@ export interface GalleryData {
 }
 
 export const api = {
+  getContent: () => fetchAPI<SiteContent>("/content"),
   getStats: () => fetchAPI<Stat[]>("/stats"),
   getServices: () => fetchAPI<Service[]>("/services"),
   getPortfolio: () => fetchAPI<PortfolioItem[]>("/portfolio"),

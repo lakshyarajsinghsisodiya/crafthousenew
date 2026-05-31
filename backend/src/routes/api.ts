@@ -24,6 +24,18 @@ router.get("/process", (_req, res) => res.json(process));
 router.get("/testimonials", (_req, res) => res.json(testimonials));
 router.get("/gallery", (_req, res) => res.json(gallery));
 
+router.get("/content", (_req, res) => {
+  res.json({
+    stats,
+    services,
+    portfolio,
+    packages,
+    process,
+    testimonials,
+    gallery,
+  });
+});
+
 const contactSchema = z.object({
   name: z.string().min(2).max(100),
   email: z.string().email(),

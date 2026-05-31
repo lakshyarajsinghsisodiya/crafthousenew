@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { gsap, registerGSAP } from "@/lib/gsap-config";
 import { EditorialHeading } from "@/components/ui/EditorialHeading";
+import { LazyVideo } from "@/components/ui/LazyVideo";
 import type { PortfolioItem } from "@/lib/api";
 
 interface PortfolioProps {
@@ -51,18 +52,13 @@ export function Portfolio({ items }: PortfolioProps) {
                 className="portfolio-block section-padding"
               >
                 <div className="portfolio-media relative aspect-video overflow-hidden">
-                  <video
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="h-full w-full object-cover"
-                    poster={item.image}
-                  >
-                    {item.video && (
-                      <source src={item.video} type="video/mp4" />
-                    )}
-                  </video>
+                  {item.video && (
+                    <LazyVideo
+                      src={item.video}
+                      poster={item.image}
+                      className="h-full w-full object-cover"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#090909] via-transparent to-transparent" />
                 </div>
                 <div className="portfolio-content mt-8 max-w-2xl">
@@ -91,6 +87,7 @@ export function Portfolio({ items }: PortfolioProps) {
                   fill
                   className="object-cover transition-transform duration-700 hover:scale-105"
                   sizes="(max-width: 1024px) 100vw, 50vw"
+                  loading="lazy"
                 />
               </div>
               <div
