@@ -142,7 +142,7 @@ export function Navigation() {
                 onClick={() => setMenuOpen(false)}
                 className="btn-primary mt-4 w-fit"
               >
-              >
+              
                 Book a Call
               </a>
             </div>
