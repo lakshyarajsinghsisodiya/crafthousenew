@@ -14,10 +14,6 @@ const socials = [
     label: "Instagram",
   },
   {
-    href: "https://linkedin.com",
-    label: "LinkedIn",
-  },
-  {
     href: whatsappUrl(siteContact.phones[0].whatsapp, defaultWhatsAppMessage),
     label: "WhatsApp",
   },
