@@ -107,6 +107,17 @@ export const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    return res.json();
+    const body = (await res.json()) as {
+      success: boolean;
+      message?: string;
+      errors?: Record<string, string[]>;
+    };
+    if (!res.ok && !body.message) {
+      return {
+        success: false,
+        message: "Could not send your message. Please call or WhatsApp us.",
+      };
+    }
+    return body;
   },
 };

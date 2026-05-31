@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap, registerGSAP, scrollReveal, onScrollSystemReady, ScrollTrigger } from "@/lib/gsap-config";
 import { EditorialHeading } from "@/components/ui/EditorialHeading";
+import { BookCallActions } from "@/components/ui/BookCallActions";
+import { siteContact } from "@/lib/site-config";
 import { api } from "@/lib/api";
 
 export function CTA() {
@@ -15,6 +17,7 @@ export function CTA() {
     type: "discovery" as "discovery" | "proposal",
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     registerGSAP();
@@ -45,14 +48,21 @@ export function CTA() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
+    setErrorMessage("");
     try {
       const res = await api.submitContact(form);
-      setStatus(res.success ? "success" : "error");
       if (res.success) {
+        setStatus("success");
         setForm({ name: "", email: "", business: "", message: "", type: "discovery" });
+      } else {
+        setStatus("error");
+        setErrorMessage(
+          res.message || "Something went wrong. Please call or WhatsApp us directly.",
+        );
       }
     } catch {
       setStatus("error");
+      setErrorMessage("Could not reach the server. Please call or WhatsApp us directly.");
     }
   };
 
@@ -74,19 +84,57 @@ export function CTA() {
           </p>
         </div>
 
+        <div
+          id="book-call"
+          className="cta-reveal mb-16 scroll-mt-28 rounded border border-[rgba(255,255,255,0.08)] bg-[#111111] p-6 md:p-10"
+        >
+          <p className="mb-2 text-[10px] uppercase tracking-[0.3em] text-[#B72A2A]">
+            Book a call
+          </p>
+          <p className="mb-6 max-w-md text-sm text-[rgba(255,255,255,0.65)]">
+            Call or WhatsApp us directly — we&apos;ll respond as soon as possible.
+          </p>
+          <BookCallActions />
+        </div>
+
         <div className="cta-reveal grid gap-12 lg:grid-cols-2 lg:gap-24">
-          <div className="flex flex-col gap-4 sm:flex-row">
-            <a href="#contact" className="btn-primary" data-cursor="magnetic">
-              Book A Call
-            </a>
-            <button
-              type="button"
-              onClick={() => setForm((f) => ({ ...f, type: "proposal" }))}
-              className="btn-ghost"
-              data-cursor="magnetic"
-            >
-              Get A Proposal
-            </button>
+          <div className="flex flex-col gap-6">
+            <div>
+              <p className="mb-3 text-[10px] uppercase tracking-[0.3em] text-[rgba(255,255,255,0.45)]">
+                Or send a message
+              </p>
+              <button
+                type="button"
+                onClick={() => setForm((f) => ({ ...f, type: "discovery" }))}
+                className={`mr-3 text-[10px] uppercase tracking-[0.2em] ${
+                  form.type === "discovery"
+                    ? "text-[#B72A2A]"
+                    : "text-[rgba(255,255,255,0.4)]"
+                }`}
+              >
+                Discovery call
+              </button>
+              <button
+                type="button"
+                onClick={() => setForm((f) => ({ ...f, type: "proposal" }))}
+                className={`text-[10px] uppercase tracking-[0.2em] ${
+                  form.type === "proposal"
+                    ? "text-[#B72A2A]"
+                    : "text-[rgba(255,255,255,0.4)]"
+                }`}
+              >
+                Get a proposal
+              </button>
+            </div>
+            <p className="text-sm text-[rgba(255,255,255,0.45)]">
+              Email:{" "}
+              <a
+                href={`mailto:${siteContact.email}`}
+                className="text-[#F5F5F5] underline-offset-4 hover:text-[#B72A2A] hover:underline"
+              >
+                {siteContact.email}
+              </a>
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -135,9 +183,7 @@ export function CTA() {
               </p>
             )}
             {status === "error" && (
-              <p className="text-sm text-red-400">
-                Something went wrong. Please try again or email us directly.
-              </p>
+              <p className="text-sm text-red-400">{errorMessage}</p>
             )}
           </form>
         </div>

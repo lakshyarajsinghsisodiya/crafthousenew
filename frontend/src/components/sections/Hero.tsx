@@ -86,7 +86,7 @@ export function Hero() {
         </p>
 
         <div className="hero-fade flex flex-col gap-4 sm:flex-row sm:gap-6">
-          <a href="#contact" className="btn-primary" data-cursor="magnetic">
+          <a href="#book-call" className="btn-primary" data-cursor="magnetic">
             Book a Discovery Call
           </a>
           <a href="#work" className="btn-ghost" data-cursor="magnetic">

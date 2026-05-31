@@ -89,7 +89,7 @@ export function Navigation() {
           </ul>
 
           <a
-            href="#contact"
+            href="#book-call"
             className="btn-primary hidden text-[10px] md:inline-flex"
             data-cursor="magnetic"
           >
@@ -138,9 +138,10 @@ export function Navigation() {
                 </motion.a>
               ))}
               <a
-                href="#contact"
+                href="#book-call"
                 onClick={() => setMenuOpen(false)}
                 className="btn-primary mt-4 w-fit"
+              >
               >
                 Book a Call
               </a>
