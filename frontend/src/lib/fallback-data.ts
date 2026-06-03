@@ -106,7 +106,7 @@ export const fallbackPackages: Package[] = [
     features: [
       "10 Posts",
       "15 Reels",
-      "Alternate Day Stories",
+      "Story Posting",
       "Editing",
       "Posting",
       "Analytics Reports",
@@ -129,7 +129,7 @@ export const fallbackTestimonials: Testimonial[] = [
   {
     id: "1",
     name: "Priya Sharma",
-    role: "Owner, Brew & Bloom Café",
+    role: "Owner, Mood & Mocha Café",
     quote: "Crafthouse transformed our Instagram from quiet to buzzing.",
     video: null,
   },
