@@ -1,6 +1,6 @@
 /** Public contact details — safe to use in client components */
 export const siteContact = {
-  email: "veloracommercials@gmail.com",
+  email: "craftinggstories@gmail.com",
   phones: [
     {
       id: "primary",
