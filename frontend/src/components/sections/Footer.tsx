@@ -32,7 +32,7 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-3">
           <div>
             <Image
-              src="/logo.png"
+              src="/logo-cs.png"
               alt="Crafthouse Media"
               width={160}
               height={48}

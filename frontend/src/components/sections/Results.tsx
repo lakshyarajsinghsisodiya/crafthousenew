@@ -56,7 +56,10 @@ function AnimatedCounter({
   };
 
   return (
-    <span ref={ref} className="editorial-heading text-5xl text-[#B72A2A] md:text-7xl lg:text-8xl">
+    <span
+      ref={ref}
+      className="editorial-heading block whitespace-nowrap text-[clamp(1.75rem,5vw,4.5rem)] leading-none text-[#B72A2A]"
+    >
       {started.current ? format() : "0"}
     </span>
   );
@@ -103,9 +106,9 @@ export function Results({ stats }: ResultsProps) {
           className="mb-16 md:mb-24"
         />
 
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12">
+        <div className="grid grid-cols-2 gap-y-10 gap-x-8 md:flex md:items-start md:justify-between md:gap-x-8">
           {stats.map((stat) => (
-            <div key={stat.id} className="stat-item border-t border-[rgba(255,255,255,0.1)] pt-6">
+            <div key={stat.id} className="stat-item border-t border-[rgba(255,255,255,0.1)] pt-6 md:flex-1">
               <AnimatedCounter
                 value={stat.value}
                 display={stat.display}

@@ -72,8 +72,8 @@ export function Hero() {
           Crafting stories that live beyond the screen.
         </p>
 
-        <h1 className="editorial-heading editorial-display mb-8 max-w-[95vw] text-[#B72A2A] md:mb-12">
-          {["CRAFTING", "DIGITAL", "EXPERIENCES"].map((line) => (
+        <h1 className="editorial-heading mb-8 text-[clamp(2.5rem,8vw,11rem)] text-[#B72A2A] md:mb-12">
+          {["CRAFTING", "DIGITAL", "EXPERIENCE"].map((line) => (
             <span key={line} className="hero-line text-mask-line block overflow-hidden">
               <span className="text-mask-inner block">{line}</span>
             </span>
