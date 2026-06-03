@@ -16,3 +16,5 @@ services:
         value: "true"
       - key: CONTACT_EMAIL
         sync: false
+      - key: WEB3FORMS_ACCESS_KEY
+        sync: false

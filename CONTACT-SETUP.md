@@ -16,7 +16,7 @@ We use **[Web3Forms](https://web3forms.com)** — free, no credit card, ~250 sub
 ### Step 1 — Create access key
 
 1. Go to [https://web3forms.com](https://web3forms.com)
-2. Enter **`veloracommercials@gmail.com`** (your inbox for form leads)
+2. Enter **`craftinggstories@gmail.com`** (your inbox for form leads)
 3. Click **Create Access Key**
 4. Copy your **Access Key**
 
