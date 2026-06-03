@@ -69,7 +69,7 @@ export function Hero() {
 
       <div className="section-padding relative z-10">
         <p className="hero-fade mb-6 text-[10px] uppercase tracking-[0.35em] text-[rgba(255,255,255,0.5)] md:text-xs">
-          Building Brands That People Remember
+          Crafting stories that live beyond the screen.
         </p>
 
         <h1 className="editorial-heading editorial-display mb-8 max-w-[95vw] text-[#B72A2A] md:mb-12">
@@ -81,8 +81,7 @@ export function Hero() {
         </h1>
 
         <p className="hero-fade mb-10 max-w-xl text-sm leading-relaxed text-[rgba(255,255,255,0.65)] md:text-base md:leading-loose">
-          We help cafes, restaurants and local businesses grow through content,
-          branding, social media and search visibility.
+          Crafting stories that inspire,  connect,  leave a long lasting mark.
         </p>
 
         <div className="hero-fade flex flex-col gap-4 sm:flex-row sm:gap-6">

@@ -61,9 +61,12 @@ export function About() {
 
         <div className="about-text lg:col-span-5 lg:flex lg:flex-col lg:justify-end">
           <p className="text-sm leading-relaxed text-[rgba(255,255,255,0.65)] md:text-base md:leading-loose">
-            Crafthouse Media creates memorable digital experiences for local
-            brands. We combine content creation, social media management, SEO
-            and paid advertising to turn businesses into recognizable brands.
+            We are a full-service creative marketing 
+            agency specializing in branding, social media 
+            marketing, content creation, performance advertising, 
+            and digital growth strategies. Our approach combines 
+            data-driven decisions with world-class creative execution 
+            to help businesses stand out in crowded markets.
           </p>
           <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[#B72A2A]">
             Cafes · Restaurants · Lifestyle
