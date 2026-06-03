@@ -82,7 +82,7 @@ export function About() {
           <div className="absolute inset-0 bg-gradient-to-t from-[#090909]/60 to-transparent" />
         </div>
 
-        <div className="about-image relative aspect-[16/10] overflow-hidden lg:col-span-4 lg:col-start-6 lg:row-start-2">
+        <div className="about-image relative aspect-[4/5] overflow-hidden lg:col-span-4 lg:col-start-6 lg:row-start-2">
           <Image
             src="/media/photos/graphic-02.jpg"
             alt="Social media content creation"
@@ -93,7 +93,7 @@ export function About() {
           />
         </div>
 
-        <div className="about-image relative hidden aspect-square overflow-hidden lg:col-span-3 lg:col-start-10 lg:row-start-2 lg:block">
+        <div className="about-image relative hidden aspect-[4/5] overflow-hidden lg:col-span-3 lg:col-start-10 lg:row-start-2 lg:block">
           <Image
             src="/media/photos/cafe-04.png"
             alt="Brand photography"

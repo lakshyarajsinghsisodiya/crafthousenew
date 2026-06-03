@@ -11,7 +11,6 @@ import type {
 export const fallbackStats: Stat[] = [
   { id: "views", label: "Content Views", value: 2000000, suffix: "+", display: "2M+" },
   { id: "reach", label: "Reach Generated", value: 500000, suffix: "+", display: "500K+" },
-  { id: "campaigns", label: "Campaigns Delivered", value: 100, suffix: "+", display: "100+" },
   { id: "brands", label: "Brands Assisted", value: 50, suffix: "+", display: "50+" },
 ];
 
@@ -69,7 +68,7 @@ export const fallbackPortfolio: PortfolioItem[] = [
     brand: "Reels Production",
     industry: "Local Business",
     services: ["Video Production", "Reels Editing"],
-    results: "890K reach in first month",
+    results: "500K+ reach in first month",
     image: "/media/photos/cafe-04.png",
     video: "/media/videos/reel-05.mp4",
     layout: "full",
@@ -135,8 +134,8 @@ export const fallbackTestimonials: Testimonial[] = [
   },
   {
     id: "2",
-    name: "Marcus Chen",
-    role: "Chef, Ember Kitchen",
+    name: "Anand Dodia",
+    role: "Chef, Five Elements",
     quote: "Professional, cinematic, and deeply strategic.",
     video: null,
   },
