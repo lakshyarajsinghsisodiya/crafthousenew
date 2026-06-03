@@ -55,11 +55,11 @@ export function Navigation() {
         <nav className="section-padding flex items-center justify-between">
           <Link href="/" className="relative z-10 flex items-center gap-3" data-cursor="magnetic">
             <Image
-              src="/logo.png"
+              src="/logo-cs.png"
               alt="Crafthouse Media"
               width={140}
               height={40}
-              className="h-8 w-auto md:h-10"
+              className="h-16 w-auto md:h-20"
               loading="eager"
               quality={80}
             />
