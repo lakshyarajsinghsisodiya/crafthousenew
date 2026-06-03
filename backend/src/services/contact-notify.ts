@@ -30,6 +30,10 @@ export async function notifyContactSubmission(
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        // Cloudflare (which fronts Web3Forms) blocks requests with no/default
+        // server User-Agent and serves an HTML challenge page. Send a real UA.
+        "User-Agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
       },
       body: JSON.stringify({
         access_key: accessKey,
@@ -46,7 +50,22 @@ export async function notifyContactSubmission(
       }),
     });
 
-    const data = (await response.json()) as { success?: boolean; message?: string };
+    const rawBody = await response.text();
+    let data: { success?: boolean; message?: string } = {};
+    try {
+      data = JSON.parse(rawBody);
+    } catch {
+      // Non-JSON (e.g. a Cloudflare HTML challenge page) — the request was
+      // blocked before reaching the Web3Forms API.
+      console.error(
+        `[Contact] Web3Forms returned non-JSON (HTTP ${response.status}):`,
+        rawBody.slice(0, 200),
+      );
+      return {
+        sent: false,
+        error: `Email provider returned an unexpected response (HTTP ${response.status}).`,
+      };
+    }
 
     if (!response.ok || !data.success) {
       return {
