@@ -9,7 +9,6 @@ import { Process } from "@/components/sections/Process";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { CTA } from "@/components/sections/CTA";
 import { Footer } from "@/components/sections/Footer";
-import { api } from "@/lib/api";
 import {
   fallbackGallery,
   fallbackPackages,
@@ -30,25 +29,14 @@ const fallbackContent = {
   gallery: fallbackGallery,
 };
 
-async function loadData() {
-  try {
-    const data =
-      process.env.NODE_ENV === "development"
-        ? fallbackContent
-        : await api.getContent();
-    return {
-      ...fallbackContent,
-      ...data,
-      packages: data.packages?.length ? data.packages : fallbackPackages,
-      services: data.services?.length ? data.services : fallbackServices,
-    };
-  } catch {
-    return fallbackContent;
-  }
+// Content is sourced from a single file (fallback-data.ts) for both local and
+// production, so editing that one file updates the live site after redeploy.
+function loadData() {
+  return fallbackContent;
 }
 
-export default async function Home() {
-  const data = await loadData();
+export default function Home() {
+  const data = loadData();
 
   return (
     <>
