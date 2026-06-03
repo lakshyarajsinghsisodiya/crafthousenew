@@ -102,22 +102,53 @@ export const api = {
     message: string;
     type: "discovery" | "proposal";
   }) => {
-    const res = await fetch(`${API_BASE}/contact`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    const body = (await res.json()) as {
-      success: boolean;
-      message?: string;
-      errors?: Record<string, string[]>;
-    };
-    if (!res.ok && !body.message) {
+    // Submit straight to Web3Forms from the browser. Web3Forms is designed for
+    // client-side use and the access key is public by design — this avoids
+    // Cloudflare blocking server-to-server calls from datacenter IPs (Render).
+    const accessKey =
+      process.env.NEXT_PUBLIC_WEB3FORMS_KEY ||
+      "f848e9b7-01cb-47fd-b3f2-21392968f38f";
+    const typeLabel =
+      data.type === "proposal" ? "Proposal request" : "Discovery call";
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          subject: `[Crafthouse Media] New ${typeLabel} from ${data.name}`,
+          from_name: data.name,
+          email: data.email,
+          message: [
+            `Type: ${typeLabel}`,
+            `Business: ${data.business || "—"}`,
+            "",
+            data.message,
+          ].join("\n"),
+        }),
+      });
+      const body = (await res.json()) as { success?: boolean; message?: string };
+
+      if (res.ok && body.success) {
+        return {
+          success: true,
+          message: "Thank you. We'll be in touch within 24 hours.",
+        };
+      }
+      return {
+        success: false,
+        message:
+          body.message || "Could not send your message. Please call or WhatsApp us.",
+      };
+    } catch {
       return {
         success: false,
         message: "Could not send your message. Please call or WhatsApp us.",
       };
     }
-    return body;
   },
 };
