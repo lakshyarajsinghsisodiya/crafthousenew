@@ -60,7 +60,7 @@ export function Hero() {
         <LazyVideo
           eager={videoReady}
           src="/media/videos/reel-05.mp4"
-          poster="/media/photos/cafe-01.png"
+          poster="/media/photos/cafe-01.jpg"
           className="h-full w-full object-cover opacity-50"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#090909]/80 via-[#090909]/60 to-[#090909]" />
