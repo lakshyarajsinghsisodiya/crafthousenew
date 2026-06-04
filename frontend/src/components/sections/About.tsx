@@ -75,7 +75,7 @@ export function About() {
 
         <div className="about-image relative aspect-[4/5] overflow-hidden lg:col-span-5 lg:col-start-1 lg:row-start-2">
           <Image
-            src="/media/photos/cafe-01.png"
+            src="/media/photos/cafe-01.jpg"
             alt="Crafthouse Media café campaign"
             fill
             className="object-cover"
@@ -98,7 +98,7 @@ export function About() {
 
         <div className="about-image relative hidden aspect-[4/5] overflow-hidden lg:col-span-3 lg:col-start-10 lg:row-start-2 lg:block">
           <Image
-            src="/media/photos/cafe-04.png"
+            src="/media/photos/cafe-04.jpg"
             alt="Brand photography"
             fill
             className="object-cover"
